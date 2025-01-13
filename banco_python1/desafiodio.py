@@ -1,6 +1,7 @@
 import os
 import time
 
+
 menu = """
 
 [d] Depositar
@@ -89,8 +90,6 @@ def CriarConta(clientes,/, Agencia, numero_contas):
         
         return conta_nova
 
-    
-
 def Login():
     conta_encontrada = False
     cpf = input("Digite seu cpf: ")
@@ -106,62 +105,66 @@ def Login():
     else:
         return int(conta)
 
-while True:
+def main():
+    while True:
+        opcao = input(menu)
 
-    opcao = input(menu)
+        if opcao == "d":
+            os.system('cls')
+            valor = float(input("Informe o valor do depósito: "))
+            saldo[conta_atual], extrato[conta_atual] = Deposito(saldo, valor, extrato, conta_atual)
+            time.sleep(2)
+            
 
-    if opcao == "d":
-        os.system('cls')
-        valor = float(input("Informe o valor do depósito: "))
-        saldo[conta_atual], extrato[conta_atual] = Deposito(saldo, valor, extrato, conta_atual)
-        time.sleep(2)
-        
+        elif opcao == "s":
+            os.system('cls')
+            valor = float(input("Informe o valor do saque: "))
+            saldo[conta_atual], extrato[conta_atual], numero_saques[conta_atual]  = Saque(conta = conta_atual, valor = valor, saldo = saldo, Limite = limite, limite_saques= LIMITE_SAQUES, extrato= extrato, numero_saques= numero_saques)
+            time.sleep(2)
+            
+        elif opcao == "e":
+            os.system('cls')
+            Extrato(saldo, extrato = extrato, conta = conta_atual)
+            time.sleep(2)
+            
 
-    elif opcao == "s":
-        os.system('cls')
-        valor = float(input("Informe o valor do saque: "))
-        saldo[conta_atual], extrato[conta_atual], numero_saques[conta_atual]  = Saque(conta = conta_atual, valor = valor, saldo = saldo, Limite = limite, limite_saques= LIMITE_SAQUES, extrato= extrato, numero_saques= numero_saques)
-        time.sleep(2)
+        elif opcao == 'c':
+            os.system('cls')
+            clientes.append(CriarUsuario(clientes))
+            print("Usuário cadastrado!")
+            time.sleep(2)
+            
         
-    elif opcao == "e":
-        os.system('cls')
-        Extrato(saldo, extrato = extrato, conta = conta_atual)
-        time.sleep(2)
+        elif opcao == 'n':
+            os.system('cls')
+            numero_contas += 1
+            nova_conta = CriarConta(clientes, Agencia= AGENCIA, numero_contas= numero_contas)
+            if nova_conta != 'erro':
+                contas.append(nova_conta)
+                saldo.append(0)
+                extrato.append('')
+                numero_saques.append(0)
+                print("Conta criada!")
+            time.sleep(2)
+            
+        elif opcao == 'l':
+            os.system('cls')
+            conta_atual = Login()
+            print("Você está logado!")
+            time.sleep(2)
         
+        elif opcao == 'o':
+            os.system('cls')
+            conta_atual = 0
+            print("Deslogado!")
+            time.sleep(2)
+        elif opcao == "q":
+            break
+            
 
-    elif opcao == 'c':
-        os.system('cls')
-        clientes.append(CriarUsuario(clientes))
-        print("Usuário cadastrado!")
-        time.sleep(2)
-        
-    
-    elif opcao == 'n':
-        os.system('cls')
-        numero_contas += 1
-        nova_conta = CriarConta(clientes, Agencia= AGENCIA, numero_contas= numero_contas)
-        if nova_conta != 'erro':
-            contas.append(nova_conta)
-            saldo.append(0)
-            extrato.append('')
-            numero_saques.append(0)
-            print("Conta criada!")
-        time.sleep(2)
-        
-    elif opcao == 'l':
-        os.system('cls')
-        conta_atual = Login()
-        print("Você está logado!")
-        time.sleep(2)
-    
-    elif opcao == 'o':
-        os.system('cls')
-        conta_atual = 0
-        print("Deslogado!")
-        time.sleep(2)
-    elif opcao == "q":
-        break
-        
+        else:
+            print("Operação inválida, por favor selecione novamente a operação desejada.")
 
-    else:
-        print("Operação inválida, por favor selecione novamente a operação desejada.")
+
+
+main()
